@@ -31,10 +31,20 @@ const api = (()=>{
     });
   };
 
+  const deleteItem = (id, onSuccess, onError) => {
+    $.ajax({
+      url: API_URL + "/bookmarks/" + id,
+      method: "DELETE",
+      success: onSuccess,
+      error: onError,
+    });
+  };
+
   return {
     getItems,
     createItem,
     updateItem,
+    deleteItem,
   };
 
 })();
