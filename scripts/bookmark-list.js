@@ -1,0 +1,6 @@
+const bookmarkList = (() => {
+
+  return {
+  };
+
+})();
