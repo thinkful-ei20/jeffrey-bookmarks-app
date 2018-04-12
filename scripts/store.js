@@ -11,6 +11,10 @@ const store = (() => {
     return this.items.find(item => item.id === id);
   };
 
+  const findAndDelete = function(id) {
+    this.items = this.items.filter(item => item.id !== id);
+  }
+
   return {
     items: [],
     error: null,
@@ -18,6 +22,7 @@ const store = (() => {
     setError,
     addItem,
     findById,
+    findAndDelete,
   };
 
 })();
