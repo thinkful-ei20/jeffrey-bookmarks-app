@@ -3,11 +3,16 @@ const store = (() => {
     this.error = error;
   };
 
+  const addItem = function(item) {
+    this.items.push(item);
+  };
+
   return {
     items: [],
     error: null,
 
     setError,
+    addItem,
   };
 
 })();
