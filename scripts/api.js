@@ -7,8 +7,21 @@ const api = (()=>{
     $.getJSON(API_URL + "/bookmarks", callback);
   };
 
+  const createItem = (item, onSuccess, onError) => {
+    const newItem = JSON.stringify(item);
+    $.ajax({
+      url: API_URL + "/bookmarks",
+      method: "POST",
+      contentType: "application/json",
+      data: newItem,
+      success: onSuccess,
+      error: onError,
+    });
+  };
+
   return {
     getItems,
+    createItem,
   };
 
 })();
