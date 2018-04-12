@@ -1,4 +1,7 @@
 const store = (() => {
+
   return {
+    items: [],
   };
+
 })();
