@@ -19,9 +19,22 @@ const api = (()=>{
     });
   };
 
+  const updateItem = (id, updateData, onSuccess, onError) => {
+    const updateItem = JSON.stringify(updateData);
+    $.ajax({
+      url: API_URL + "/bookmarks/" + id,
+      method: "PATCH",
+      contentType: "application/json",
+      data: updateItem,
+      success: onSuccess,
+      error: onError,
+    });
+  };
+
   return {
     getItems,
     createItem,
+    updateItem,
   };
 
 })();
