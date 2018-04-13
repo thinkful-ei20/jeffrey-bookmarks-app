@@ -43,6 +43,18 @@ const bookmarkList = (() => {
     } else {
       $('.error-container').empty();
     }
+
+    if (store.adding) {
+      console.log("store is adding");
+      $('.bookmark-add-controls').removeClass('hidden');
+      $('.js-bookmark-list-entry-title').val("");
+      $('.js-bookmark-list-entry-url').val("");
+      $('.js-bookmark-list-entry-title').focus();
+    }
+    else {
+      console.log("store is NOT adding");
+      $('.bookmark-add-controls').addClass('hidden');
+    }
     
     console.log("`render` ran");
     const bookmarkListItemsString = generateBookmarkItemsString(store.items);
@@ -51,7 +63,8 @@ const bookmarkList = (() => {
 
   const handleCancelItemSubmit = () => {
     $('#js-bookmark-list-form').on("reset", ((event) => {
-      $('.bookmark-add-controls').addClass('hidden');
+      store.setAdding(false);
+      render();      
     }));
   };
 
@@ -71,16 +84,13 @@ const bookmarkList = (() => {
           render();
         }
       );
-      
     });
   };
 
   const handleAddItemClicked = () => {
     $('.js-list-add').click((event) => {
-      $('.bookmark-add-controls').removeClass('hidden');
-      $('.js-bookmark-list-entry-title').val("");
-      $('.js-bookmark-list-entry-url').val("");
-      $('.js-bookmark-list-entry-title').focus();
+      store.setAdding(true);
+      render();
     });
   };
 

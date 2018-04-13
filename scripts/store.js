@@ -3,6 +3,10 @@ const store = (() => {
     this.error = error;
   };
 
+  const setAdding = function(adding) {
+    this.adding = adding;
+  }
+
   const addItem = function(item) {
     this.items.push(item);
   };
@@ -23,8 +27,10 @@ const store = (() => {
   return {
     items: [],
     error: null,
+    adding: false,
 
     setError,
+    setAdding,
     addItem,
     findById,
     findAndDelete,
