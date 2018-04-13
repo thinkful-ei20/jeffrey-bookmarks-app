@@ -27,7 +27,7 @@ const bookmarkList = (() => {
           <label for="bookmark-item-rating">Rating: </label>
           <input class="bookmark-item-rating js-bookmark-item-rating" type="number" min="0" max="5" value="${(item.rating ? item.rating : 0)}" /><br>
           <label for="bookmark-item-desc">Description: </label>
-          <textarea class="bookmark-item-desc js-bookmark-item-desc" value="${(item.desc) ? item.desc : ''}" /><br>
+          <textarea class="bookmark-item-desc js-bookmark-item-desc">${(item.desc) ? item.desc : ''}</textarea><br>
           <button type="reset">Cancel</button>
           <button type="submit">Update</button>
         </form>
@@ -39,7 +39,7 @@ const bookmarkList = (() => {
       return `
       <li class="item-element js-item-element" data-item-id="${item.id}">
         <div class="item-title">${item.title}</div>
-        <div class="item-title">${(item.rating ? item.rating + " stars" : "No Rating")}</div>    
+        <div class="item-title">${(item.rating && item.rating > 0 ? item.rating + " stars" : "No Rating")}</div>
         <p>${(item.desc ? item.desc : "No Description")}</p>
         <a href="${item.url}" target="_blank">Visit Site</a>
         <button class="bookmark-item-delete js-item-delete">Remove Bookmark</button>
@@ -92,7 +92,7 @@ const bookmarkList = (() => {
     $('#js-bookmark-list-form').on("reset", ((event) => {
       store.setAdding(false);
       store.setError(false);
-      render();      
+      render();
     }));
   };
 
@@ -141,7 +141,42 @@ const bookmarkList = (() => {
     $('.js-bookmark-list').on('click', '.js-item-edit', event => {
       const id = getItemIdFromElement(event.currentTarget);
       store.setEditingId(id);
-      render();      
+      render();
+    });
+  };
+
+  const handleCancelEditItemSubmit = () => {
+    $('.js-bookmark-list').on("reset", ((event) => {
+      store.setEditingId('');
+      store.setError(false);
+      render();
+    }));
+  };
+
+  const handleEditItemSubmit = () => {
+    $('.js-bookmark-list').on('submit', '.js-edit-item', (event) => {
+      event.preventDefault();
+      const id = getItemIdFromElement(event.currentTarget);
+      const itemTitle = $('.js-bookmark-item-title').val();
+      const itemUrl = $('.js-bookmark-item-url').val();
+      const itemRating = $('.js-bookmark-item-rating').val();
+      const itemDesc = $('.js-bookmark-item-desc').val();
+      const itemData = { title: itemTitle, url: itemUrl};
+      if(itemRating > 0)
+        itemData.rating = itemRating;
+      if(itemDesc.length > 0)
+        itemData.desc = itemDesc;
+
+      api.updateItem(id, itemData,
+        (response) => {
+          store.findAndUpdate(id, itemData);
+          store.setEditingId('');
+          render();
+        },
+        (err) => {
+          store.setError(err);
+          render();
+        });
     });
   };
 
@@ -167,6 +202,8 @@ const bookmarkList = (() => {
     handleAddItemClicked();
     handleMinimumRatingChanged();
     handleNewItemSubmit();
+    handleEditItemSubmit();
+    handleCancelEditItemSubmit();
     handleCancelItemSubmit();
     handleEditItemClicked();
     handleDeleteItemClicked();
