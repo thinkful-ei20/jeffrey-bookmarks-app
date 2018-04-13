@@ -18,12 +18,12 @@ const bookmarkList = (() => {
   const generateItemElement = (item) => {
     return `
     <li class="item-element js-item-element" data-item-id="${item.id}">
-      <details>
-        <summary>${item.title} ${(item.rating ? item.rating + " stars" : "No Rating")}</summary>
-        <p>${(item.desc ? item.desc : "No Description")}</p>
-        <a href="${item.url}" target="_blank">Visit Site</a>
-        <button class="bookmark-item-delete js-item-delete">Remove Bookmark</button>
-      </details>
+      <div class="item-title">${item.title}</div>
+      <div class="item-title">${(item.rating ? item.rating + " stars" : "No Rating")}</div>    
+      <p>${(item.desc ? item.desc : "No Description")}</p>
+      <a href="${item.url}" target="_blank">Visit Site</a>
+      <button class="bookmark-item-delete js-item-delete">Remove Bookmark</button>
+      <button class="bookmark-item-edit js-item-edit">Edit Bookmark</button>
     </li>
     `;
   };
