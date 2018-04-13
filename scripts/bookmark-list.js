@@ -19,13 +19,18 @@ const bookmarkList = (() => {
     if(item.id === store.editingId) {
       return `
       <li class="item-element js-item-element" data-item-id="${item.id}">
-        EDIT ME
-        <div class="item-title">${item.title}</div>
-        <div class="item-title">${(item.rating ? item.rating + " stars" : "No Rating")}</div>    
-        <p>${(item.desc ? item.desc : "No Description")}</p>
-        <a href="${item.url}" target="_blank">Visit Site</a>
-        <button class="bookmark-item-delete js-item-delete">Remove Bookmark</button>
-        <button class="bookmark-item-edit js-item-edit">Edit Bookmark</button>
+        <form class="js-edit-item">
+          <label for="bookmark-item-title">Title: </label>
+          <input class="bookmark-item-title js-bookmark-item-title" type="text" value="${item.title}" /><br>
+          <label for="bookmark-item-url">Url: </label>
+          <input class="bookmark-item-url js-bookmark-item-url" type="text" value="${item.url}" /><br>
+          <label for="bookmark-item-rating">Rating: </label>
+          <input class="bookmark-item-rating js-bookmark-item-rating" type="number" min="0" max="5" value="${(item.rating ? item.rating : 0)}" /><br>
+          <label for="bookmark-item-desc">Description: </label>
+          <textarea class="bookmark-item-desc js-bookmark-item-desc" value="${(item.desc) ? item.desc : ''}" /><br>
+          <button type="reset">Cancel</button>
+          <button type="submit">Update</button>
+        </form>
       </li>
       `;
     }
@@ -145,6 +150,7 @@ const bookmarkList = (() => {
       const id = getItemIdFromElement(event.currentTarget);
       api.deleteItem(id, () => {
         store.findAndDelete(id);
+        store.setEditingId('');
         render();
       });
     });
