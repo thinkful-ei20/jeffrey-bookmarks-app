@@ -25,6 +25,12 @@ const bookmarkList = (() => {
     $('.js-bookmark-list').html(bookmarkListItemsString);
   };
 
+  const handleCancelItemSubmit = () => {
+    $('#js-bookmark-list-form').on("reset", ((event) => {
+      $('.bookmark-add-controls').addClass('hidden');
+    }));
+  };
+
   const handleNewItemSubmit = () => {
     $('#js-bookmark-list-form').submit((event) => {
       event.preventDefault();
@@ -38,19 +44,25 @@ const bookmarkList = (() => {
         (err) => {
           store.setError(err);
           render();
-        });
+        }
+      );
+      $('.bookmark-add-controls').addClass('hidden');
     });
   };
 
   const handleAddItemClicked = () => {
     $('.js-list-add').click((event) => {
-      console.log(event);
+      $('.bookmark-add-controls').removeClass('hidden');
+      $('.js-bookmark-list-entry-title').empty();
+      $('.js-bookmark-list-entry-url').empty();
+      $('.js-bookmark-list-entry-title').focus();
     });
   };
 
   const bindEvenHandlers = () => {
     handleAddItemClicked();
     handleNewItemSubmit();
+    handleCancelItemSubmit();
   };
 
   return {
