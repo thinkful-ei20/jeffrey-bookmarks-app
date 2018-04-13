@@ -3,8 +3,8 @@ const bookmarkList = (() => {
     return `
     <li class="js-item-element" data-item-id="${item.id}">
       <details>
-        <summary>${item.title} ${item.rating} stars</summary>
-        <p>${item.desc}</p>
+        <summary>${item.title} ${(item.rating ? item.rating + " stars" : "No Rating")}</summary>
+        <p>${(item.desc ? item.desc : "No Description")}</p>
         <a href="${item.url}" target="_blank">Visit Site</a>
       </details>
     </li>
