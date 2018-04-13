@@ -2,8 +2,11 @@ const bookmarkList = (() => {
   const generateItemElement = (item) => {
     return `
     <li class="js-item-element" data-item-id="${item.id}">
-    ${item.title}
-    ${item.rating} stars
+      <details>
+        <summary>${item.title} ${item.rating} stars</summary>
+        <p>${item.desc}</p>
+        <a href="${item.url}" target="_blank">Visit Site</a>
+      </details>
     </li>
     `;
   };
