@@ -37,6 +37,9 @@ const bookmarkList = (() => {
   };
 
   const render = () => {
+    console.log("`render` ran");
+    console.log(store);
+
     if (store.error) {
       const el = generateError(store.error);
       $('.error-container').html(el);
@@ -45,18 +48,15 @@ const bookmarkList = (() => {
     }
 
     if (store.adding) {
-      console.log("store is adding");
       $('.bookmark-add-controls').removeClass('hidden');
       $('.js-bookmark-list-entry-title').val("");
       $('.js-bookmark-list-entry-url').val("");
       $('.js-bookmark-list-entry-title').focus();
     }
     else {
-      console.log("store is NOT adding");
       $('.bookmark-add-controls').addClass('hidden');
     }
     
-    console.log("`render` ran");
     const bookmarkListItemsString = generateBookmarkItemsString(store.items);
     $('.js-bookmark-list').html(bookmarkListItemsString);
   };
@@ -76,7 +76,8 @@ const bookmarkList = (() => {
       api.createItem({title: newItemTitle, url: newItemUrl},
         (newItem) => {
           store.addItem(newItem);
-          $('.bookmark-add-controls').addClass('hidden');
+          store.setAdding(false);
+          store.setError(null);
           render();
         },
         (err) => {
