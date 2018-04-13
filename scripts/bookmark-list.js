@@ -30,6 +30,10 @@ const bookmarkList = (() => {
 
   const generateBookmarkItemsString = (bookmarkList) => {
     const items = store.items.map((item) => {
+      if(!(item.rating >= store.rating)) {
+        return '';
+      }
+
       return generateItemElement(item);
     });
     
@@ -56,6 +60,8 @@ const bookmarkList = (() => {
     else {
       $('.bookmark-add-controls').addClass('hidden');
     }
+
+    $('.js-list-rating').val(store.rating);
     
     const bookmarkListItemsString = generateBookmarkItemsString(store.items);
     $('.js-bookmark-list').html(bookmarkListItemsString);
@@ -64,6 +70,7 @@ const bookmarkList = (() => {
   const handleCancelItemSubmit = () => {
     $('#js-bookmark-list-form').on("reset", ((event) => {
       store.setAdding(false);
+      store.setError(false);
       render();      
     }));
   };
@@ -95,6 +102,14 @@ const bookmarkList = (() => {
     });
   };
 
+  const handleMinimumRatingChanged = () => {
+    $('.js-list-rating').on('change', (event) => {
+      const rating = parseInt($('.js-list-rating').val());
+      store.setRating(rating);
+      render();
+    });
+  };
+
   function getItemIdFromElement(item) {
     return $(item)
       .closest('.js-item-element')
@@ -120,10 +135,11 @@ const bookmarkList = (() => {
 
   const bindEvenHandlers = () => {
     handleAddItemClicked();
+    handleMinimumRatingChanged();
     handleNewItemSubmit();
     handleCancelItemSubmit();
     handleDeleteItemClicked();
-    handleCloseError();
+    handleCloseError();    
   };
 
   return {

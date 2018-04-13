@@ -7,6 +7,10 @@ const store = (() => {
     this.adding = adding;
   }
 
+  const setRating = function(rating) {
+      this.rating = rating;
+  }
+
   const addItem = function(item) {
     this.items.push(item);
   };
@@ -28,9 +32,11 @@ const store = (() => {
     items: [],
     error: null,
     adding: false,
+    rating: 0,
 
     setError,
     setAdding,
+    setRating,
     addItem,
     findById,
     findAndDelete,
