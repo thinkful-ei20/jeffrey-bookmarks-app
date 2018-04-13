@@ -16,16 +16,32 @@ const bookmarkList = (() => {
   };
 
   const generateItemElement = (item) => {
-    return `
-    <li class="item-element js-item-element" data-item-id="${item.id}">
-      <div class="item-title">${item.title}</div>
-      <div class="item-title">${(item.rating ? item.rating + " stars" : "No Rating")}</div>    
-      <p>${(item.desc ? item.desc : "No Description")}</p>
-      <a href="${item.url}" target="_blank">Visit Site</a>
-      <button class="bookmark-item-delete js-item-delete">Remove Bookmark</button>
-      <button class="bookmark-item-edit js-item-edit">Edit Bookmark</button>
-    </li>
-    `;
+    if(item.id === store.editingId) {
+      return `
+      <li class="item-element js-item-element" data-item-id="${item.id}">
+        EDIT ME
+        <div class="item-title">${item.title}</div>
+        <div class="item-title">${(item.rating ? item.rating + " stars" : "No Rating")}</div>    
+        <p>${(item.desc ? item.desc : "No Description")}</p>
+        <a href="${item.url}" target="_blank">Visit Site</a>
+        <button class="bookmark-item-delete js-item-delete">Remove Bookmark</button>
+        <button class="bookmark-item-edit js-item-edit">Edit Bookmark</button>
+      </li>
+      `;
+    }
+    else
+    {
+      return `
+      <li class="item-element js-item-element" data-item-id="${item.id}">
+        <div class="item-title">${item.title}</div>
+        <div class="item-title">${(item.rating ? item.rating + " stars" : "No Rating")}</div>    
+        <p>${(item.desc ? item.desc : "No Description")}</p>
+        <a href="${item.url}" target="_blank">Visit Site</a>
+        <button class="bookmark-item-delete js-item-delete">Remove Bookmark</button>
+        <button class="bookmark-item-edit js-item-edit">Edit Bookmark</button>
+      </li>
+      `;
+    }
   };
 
   const generateBookmarkItemsString = (bookmarkList) => {
@@ -116,6 +132,14 @@ const bookmarkList = (() => {
       .data('item-id');
   }
 
+  const handleEditItemClicked = () => {
+    $('.js-bookmark-list').on('click', '.js-item-edit', event => {
+      const id = getItemIdFromElement(event.currentTarget);
+      store.setEditingId(id);
+      render();      
+    });
+  };
+
   const handleDeleteItemClicked = () => {
     $('.js-bookmark-list').on('click', '.js-item-delete', event => {
       const id = getItemIdFromElement(event.currentTarget);
@@ -138,6 +162,7 @@ const bookmarkList = (() => {
     handleMinimumRatingChanged();
     handleNewItemSubmit();
     handleCancelItemSubmit();
+    handleEditItemClicked();
     handleDeleteItemClicked();
     handleCloseError();    
   };

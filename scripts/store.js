@@ -11,6 +11,10 @@ const store = (() => {
       this.rating = rating;
   }
 
+  const setEditingId = function(id) {
+    this.editingId = id;
+  };
+
   const addItem = function(item) {
     this.items.push(item);
   };
@@ -33,10 +37,12 @@ const store = (() => {
     error: null,
     adding: false,
     rating: 0,
+    editingId: '',
 
     setError,
     setAdding,
     setRating,
+    setEditingId,
     addItem,
     findById,
     findAndDelete,
