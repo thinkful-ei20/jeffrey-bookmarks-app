@@ -1,5 +1,24 @@
 const bookmarkList = (() => {
+  const generateItemElement = (item) => {
+    return `
+    <li class="js-item-element" data-item-id="${item.id}">
+    ${item.name}
+    </li>
+    `;
+  };
+
+  const generateBookmarkItemsString = (bookmarkList) => {
+    const items = store.items.map((item) => {
+      return generateItemElement(item);
+    });
+    
+    return items.join("");
+  };
+
   const render = () => {
+    console.log("`render` ran");
+    const bookmarkListItemsString = generateBookmarkItemsString(store.items);
+    $('.js-bookmark-list').html(bookmarkListItemsString);
   };
 
   const bindEvenHandlers = () => {
