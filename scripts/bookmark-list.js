@@ -25,6 +25,12 @@ const bookmarkList = (() => {
     $('.js-bookmark-list').html(bookmarkListItemsString);
   };
 
+  const handleNewItemSubmit = () => {
+    $('#js-bookmark-list-form').submit((event) => {
+      event.preventDefault();
+    });
+  };
+
   const handleAddItemClicked = () => {
     $('.js-list-add').click((event) => {
       console.log(event);
@@ -33,6 +39,7 @@ const bookmarkList = (() => {
 
   const bindEvenHandlers = () => {
     handleAddItemClicked();
+    handleNewItemSubmit();
   };
 
   return {
