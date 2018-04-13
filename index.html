@@ -14,7 +14,7 @@
     <div class="error-container"></div>
     <h1>Bookmarks App</h1>
     <div class="bookmark-list-controls">
-      <button class="bookmark-list-add js-list-add">Add</button>
+      <button class="bookmark-list-add js-list-add">Add new bookmark</button>
       <select name="" id="">
         <option selected="selected">Minimum Rating</option>
         <option value="5">5 Stars</option>
@@ -23,6 +23,16 @@
         <option value="2">2 Stars</option>
         <option value="1">1 Stars</option>
       </select>
+    </div>
+    <div class="bookmark-add-controls">
+      <form id="js-bookmark-list-form">
+        <label for="bookmark-list-entry-name">Name: </label>
+        <input type="text" name="bookmark-list-entry-name" class="js-bookmark-list-entry-name">
+        <label for="bookmark-list-entry-url">URL: </label>
+        <input type="text" name="bookmark-list-entry-url" class="js-bookmark-list-entry-url">
+        <button type="reset">Cancel</button>
+        <button type="submit">Save</button>
+      </form>
     </div>
     <ul class="bookmark-list js-bookmark-list">
     </ul>
