@@ -25,7 +25,14 @@ const bookmarkList = (() => {
     $('.js-bookmark-list').html(bookmarkListItemsString);
   };
 
+  const handleAddItemClicked = () => {
+    $('.js-list-add').click((event) => {
+      console.log(event);
+    });
+  };
+
   const bindEvenHandlers = () => {
+    handleAddItemClicked();
   };
 
   return {
