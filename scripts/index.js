@@ -3,7 +3,7 @@ $(document).ready(() => {
   bookmarkList.render();
 
   api.getItems((items) => {
-    items.forEach((item) => store.addItem(item));
+    items.forEach((item) => store.insert(item));
     bookmarkList.render();
   });
 });

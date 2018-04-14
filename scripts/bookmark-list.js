@@ -50,7 +50,7 @@ const bookmarkList = (() => {
   };
 
   const generateBookmarkItemsString = (bookmarkList) => {
-    const items = store.items.map((item) => {
+    const items = store.getItems().map((item) => {
       if(!(item.rating >= store.rating)) {
         return '';
       }
@@ -72,7 +72,7 @@ const bookmarkList = (() => {
       $('.error-container').empty();
     }
 
-    if (store.adding) {
+    if (store.getRenderMode() === store.RENDER_MODE.adding) {
       $('.bookmark-add-controls').removeClass('hidden');
       $('.js-bookmark-list-entry-title').val("");
       $('.js-bookmark-list-entry-url').val("");
@@ -84,13 +84,13 @@ const bookmarkList = (() => {
 
     $('.js-list-rating').val(store.rating);
     
-    const bookmarkListItemsString = generateBookmarkItemsString(store.items);
+    const bookmarkListItemsString = generateBookmarkItemsString(store.getItems());
     $('.js-bookmark-list').html(bookmarkListItemsString);
   };
 
   const handleCancelItemSubmit = () => {
     $('#js-bookmark-list-form').on("reset", ((event) => {
-      store.setAdding(false);
+      store.setRenderMode(store.RENDER_MODE.default);
       store.setError(null);
       render();
     }));
@@ -104,7 +104,7 @@ const bookmarkList = (() => {
       api.createItem({title: newItemTitle, url: newItemUrl},
         (newItem) => {
           store.addItem(newItem);
-          store.setAdding(false);
+          store.setRenderMode(store.RENDER_MODE.default);
           store.setError(null);
           render();
         },
@@ -118,7 +118,7 @@ const bookmarkList = (() => {
 
   const handleAddItemClicked = () => {
     $('.js-list-add').click((event) => {
-      store.setAdding(true);
+      store.setRenderMode(store.RENDER_MODE.adding);
       render();
     });
   };
@@ -169,7 +169,7 @@ const bookmarkList = (() => {
 
       api.updateItem(id, itemData,
         (response) => {
-          store.findAndUpdate(id, itemData);
+          store.findAndUpdateItem(id, itemData);
           store.setEditingId('');
           render();
         },
@@ -184,7 +184,7 @@ const bookmarkList = (() => {
     $('.js-bookmark-list').on('click', '.js-item-delete', event => {
       const id = getItemIdFromElement(event.currentTarget);
       api.deleteItem(id, () => {
-        store.findAndDelete(id);
+        store.findAndDeleteItem(id);
         store.setEditingId('');
         render();
       });
