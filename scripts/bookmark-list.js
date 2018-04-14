@@ -1,5 +1,5 @@
 'use strict';
-/* global jQuery, store */
+/* global jQuery, api, store */
 
 // eslint-disable-next-line no-unused-vars
 const bookmarkList = (($) => {
@@ -21,40 +21,32 @@ const bookmarkList = (($) => {
   };
 
   const generateItemElement = (item) => {
-    if(item.id === store.getSelectedId()) {
-      return `
-      <li class="item-element js-item-element" data-item-id="${item.id}">
-        <form class="js-edit-item">
-          <label for="bookmark-item-title">Title: </label>
-          <input class="bookmark-item-title js-bookmark-item-title" type="text" value="${item.title}" /><br>
-          <label for="bookmark-item-url">Url: </label>
-          <input class="bookmark-item-url js-bookmark-item-url" type="text" value="${item.url}" /><br>
-          <label for="bookmark-item-rating">Rating: </label>
-          <input class="bookmark-item-rating js-bookmark-item-rating" type="number" min="0" max="5" value="${(item.rating ? item.rating : 0)}" /><br>
-          <label for="bookmark-item-desc">Description: </label>
-          <textarea class="bookmark-item-desc js-bookmark-item-desc">${(item.desc) ? item.desc : ''}</textarea><br>
-          <button type="reset">Cancel</button>
-          <button type="submit">Update</button>
-        </form>
-      </li>
-      `;
+    console.log('`bookmarkList.generateItemElement` ran'); // eslint-disable-line no-console
+    let itemRating = '';
+    for(let i = 1; i <= 5; i++) {
+      itemRating += `<span class="fa fa-star ${(item.rating >= i ? 'checked' : '')}"></span>`;
     }
-    else
-    {
-      return `
-      <li class="item-element js-item-element" data-item-id="${item.id}">
-        <div class="item-title">${item.title}</div>
-        <div class="item-title">${(item.rating && item.rating > 0 ? item.rating + " stars" : "No Rating")}</div>
-        <p>${(item.desc ? item.desc : "No Description")}</p>
-        <a href="${item.url}" target="_blank">Visit Site</a>
-        <button class="bookmark-item-delete js-item-delete">Remove Bookmark</button>
-        <button class="bookmark-item-edit js-item-edit">Edit Bookmark</button>
-      </li>
-      `;
+
+    let itemView = '';
+    if(store.selectedIds.includes(item.id)) {
+      itemView += `<p>${(item.desc ? item.desc : "No Description")}</p>`;
+      itemView += `<a href="${item.url}" target="_blank"><p>Visit Site</p></a>`;
+      itemView += `<button class="bookmark-item-delete js-item-delete">Remove Bookmark</button>`;
     }
+
+    return `
+    <li class="item-element js-item-element" data-item-id="${item.id}">
+      <div class="item-element-container">
+        <h2>${item.title}</h2>
+        ${itemView}
+        ${itemRating}
+      </div>
+    </li>
+    `;
   };
 
   const generateBookmarkItemsString = (itemList) => {
+    console.log('`bookmarkList.generateBookmarkItemsString` ran'); // eslint-disable-line no-console
     const items = itemList.map((item) => {
       if(!(item.rating >= store.getFilterMinimumRatingAbove())) {
         return '';
@@ -67,8 +59,8 @@ const bookmarkList = (($) => {
   };
 
   const render = () => {
-    console.log("`render` ran");
-    console.log(store);
+    console.log('`RENDER` ran'); // eslint-disable-line no-console
+    console.log(store); // eslint-disable-line no-console
 
     if (store.hasError()) {
       const el = generateError(store.getError());
@@ -95,6 +87,8 @@ const bookmarkList = (($) => {
   };
 
   const handleCancelItemSubmit = () => {
+    console.log('`bookmarkList.handleCancelItemSubmit` ran'); // eslint-disable-line no-console
+    console.log('`render` ran'); // eslint-disable-line no-console
     $('#js-bookmark-list-form').on("reset", ((event) => {
       store.setRenderMode(store.RENDER_MODE.default);
       store.setError(null);
@@ -103,6 +97,7 @@ const bookmarkList = (($) => {
   };
 
   const handleNewItemSubmit = () => {
+    console.log('`bookmarkList.handleNewItemSubmit` ran'); // eslint-disable-line no-console
     $('#js-bookmark-list-form').submit((event) => {
       event.preventDefault();
       const newItemTitle = $('.js-bookmark-list-entry-title').val();
@@ -123,6 +118,7 @@ const bookmarkList = (($) => {
   };
 
   const handleAddItemClicked = () => {
+    console.log('`bookmarkList.handleAddItemClicked` ran'); // eslint-disable-line no-console
     $('.js-list-add').click((event) => {
       store.setRenderMode(store.RENDER_MODE.adding);
       render();
@@ -130,6 +126,7 @@ const bookmarkList = (($) => {
   };
 
   const handleMinimumRatingChanged = () => {
+    console.log('`bookmarkList.handleMinimumRatingChanged` ran'); // eslint-disable-line no-console
     $('.js-list-rating').on('change', (event) => {
       const rating = parseInt($('.js-list-rating').val());
       store.setFilterMinimumRatingAbove(rating);
@@ -138,12 +135,28 @@ const bookmarkList = (($) => {
   };
 
   function getItemIdFromElement(item) {
+    console.log('`bookmarkList.getItemIdFromElement` ran'); // eslint-disable-line no-console
     return $(item)
       .closest('.js-item-element')
       .data('item-id');
   }
 
+  const handleListItemClicked = () => {
+    console.log('`bookmarkList.handleListItemClicked` ran'); // eslint-disable-line no-console
+    $('.js-bookmark-list').on('click', '.js-item-element', event => {
+      const id = getItemIdFromElement(event.currentTarget);
+      if(store.selectedIds.includes(id)) {
+        store.selectedIds.splice(store.selectedIds.indexOf(id), 1);
+      }
+      else {
+        store.selectedIds.push(id);
+      }
+      render();
+    });
+  };
+
   const handleEditItemClicked = () => {
+    console.log('`bookmarkList.handleEditItemClicked` ran'); // eslint-disable-line no-console
     $('.js-bookmark-list').on('click', '.js-item-edit', event => {
       const id = getItemIdFromElement(event.currentTarget);
       store.setSelectedId(id);
@@ -152,6 +165,7 @@ const bookmarkList = (($) => {
   };
 
   const handleCancelEditItemSubmit = () => {
+    console.log('`bookmarkList.handleCancelEditItemSubmit` ran'); // eslint-disable-line no-console
     $('.js-bookmark-list').on("reset", ((event) => {
       store.setSelectedId('');
       store.setError(null);
@@ -160,6 +174,7 @@ const bookmarkList = (($) => {
   };
 
   const handleEditItemSubmit = () => {
+    console.log('`bookmarkList.handleEditItemSubmit` ran'); // eslint-disable-line no-console
     $('.js-bookmark-list').on('submit', '.js-edit-item', (event) => {
       event.preventDefault();
       const id = getItemIdFromElement(event.currentTarget);
@@ -187,6 +202,7 @@ const bookmarkList = (($) => {
   };
 
   const handleDeleteItemClicked = () => {
+    console.log('`bookmarkList.handleDeleteItemClicked` ran'); // eslint-disable-line no-console
     $('.js-bookmark-list').on('click', '.js-item-delete', event => {
       const id = getItemIdFromElement(event.currentTarget);
       api.deleteItem(id, () => {
@@ -198,6 +214,7 @@ const bookmarkList = (($) => {
   };
 
   const handleCloseError = () => {
+    console.log('`bookmarkList.handleCloseError` ran'); // eslint-disable-line no-console
     $('.error-container').on('click', '#cancel-error', () => {
       store.setError(null);
       render();
@@ -205,12 +222,14 @@ const bookmarkList = (($) => {
   };
 
   const bindEvenHandlers = () => {
+    console.log('`bookmarkList.bindEvenHandlers` ran'); // eslint-disable-line no-console
     handleAddItemClicked();
     handleMinimumRatingChanged();
     handleNewItemSubmit();
     handleEditItemSubmit();
     handleCancelEditItemSubmit();
     handleCancelItemSubmit();
+    handleListItemClicked();
     handleEditItemClicked();
     handleDeleteItemClicked();
     handleCloseError();    

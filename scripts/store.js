@@ -92,6 +92,7 @@ const store = (() => {
     getFilterMinimumRatingAbove,
     setFilterMinimumRatingAbove,
     
+    selectedIds: [],
     setSelectedId,
     getSelectedId,
     
