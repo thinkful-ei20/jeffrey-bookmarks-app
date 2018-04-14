@@ -29,18 +29,20 @@ const bookmarkList = (($) => {
 
     let itemView = '';
     if(store.selectedIds.includes(item.id)) {
-      itemView += `<p>${(item.desc ? item.desc : "No Description")}</p>`;
-      itemView += `<a href="${item.url}" target="_blank"><p>Visit Site</p></a>`;
-      itemView += `<button class="bookmark-item-delete js-item-delete">Remove Bookmark</button>`;
+      itemView = `
+      <p>${(item.desc ? item.desc : 'No Description')}</p>
+      <a href="${item.url}" target="_blank"><p>Visit Site</p></a>
+      <button class="bookmark-item-delete js-item-delete">Remove Bookmark</button>
+      `;
     }
 
     return `
-    <li class="item-element js-item-element" data-item-id="${item.id}">
-      <div class="item-element-container">
-        <h2>${item.title}</h2>
-        ${itemView}
-        ${itemRating}
-      </div>
+    <li class="item-element js-item-element card" data-item-id="${item.id}">
+    <h3>${item.title}</h3>
+    ${itemView}
+    <div class="item-element-footer>
+      ${itemRating}
+    </div>
     </li>
     `;
   };
@@ -55,7 +57,7 @@ const bookmarkList = (($) => {
       return generateItemElement(item);
     });
     
-    return items.join("");
+    return items.join('');
   };
 
   const render = () => {
@@ -88,7 +90,6 @@ const bookmarkList = (($) => {
 
   const handleCancelItemSubmit = () => {
     console.log('`bookmarkList.handleCancelItemSubmit` ran'); // eslint-disable-line no-console
-    console.log('`render` ran'); // eslint-disable-line no-console
     $('#js-bookmark-list-form').on("reset", ((event) => {
       store.setRenderMode(store.RENDER_MODE.default);
       store.setError(null);
