@@ -65,8 +65,8 @@ const bookmarkList = (() => {
     console.log("`render` ran");
     console.log(store);
 
-    if (store.error) {
-      const el = generateError(store.error);
+    if (store.hasError()) {
+      const el = generateError(store.getError());
       $('.error-container').html(el);
     } else {
       $('.error-container').empty();
@@ -91,7 +91,7 @@ const bookmarkList = (() => {
   const handleCancelItemSubmit = () => {
     $('#js-bookmark-list-form').on("reset", ((event) => {
       store.setAdding(false);
-      store.setError(false);
+      store.setError(null);
       render();
     }));
   };
@@ -148,7 +148,7 @@ const bookmarkList = (() => {
   const handleCancelEditItemSubmit = () => {
     $('.js-bookmark-list').on("reset", ((event) => {
       store.setEditingId('');
-      store.setError(false);
+      store.setError(null);
       render();
     }));
   };

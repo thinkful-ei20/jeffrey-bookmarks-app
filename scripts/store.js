@@ -1,15 +1,28 @@
+'use strict';
+/* global */
+
+// eslint-disable-next-line no-unused-vars
 const store = (() => {
-  const setError = function(error) {
-    this.error = error;
+  let error = null;
+  const setError = (err) => {
+    error = err;
+  };
+
+  const hasError = () => {
+    return Boolean(error);
+  };
+
+  const getError = () => {
+    return error;
   };
 
   const setAdding = function(adding) {
     this.adding = adding;
-  }
+  };
 
   const setRating = function(rating) {
-      this.rating = rating;
-  }
+    this.rating = rating;
+  };
 
   const setEditingId = function(id) {
     this.editingId = id;
@@ -34,12 +47,13 @@ const store = (() => {
 
   return {
     items: [],
-    error: null,
     adding: false,
     rating: 0,
     editingId: '',
 
     setError,
+    hasError,
+    getError,
     setAdding,
     setRating,
     setEditingId,
