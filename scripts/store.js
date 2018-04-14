@@ -52,9 +52,9 @@ const store = (() => {
     return this.items.find(item => item.id === id);
   };
 
-  const findAndUpdateItem = (id, newData) => {
+  const findAndUpdateItem = function(id, newData) {
     console.log('`store.findAndUpdateItem` ran'); // eslint-disable-line no-console
-    const item = findById(id);
+    const item = this.findById(id);
     Object.assign(item, newData);
   };
 
@@ -81,6 +81,7 @@ const store = (() => {
     editingId: '',
     
     addItem,
+    findById,
     findAndUpdateItem,
     findAndDeleteItem,
   };

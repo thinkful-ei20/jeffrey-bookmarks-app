@@ -58,12 +58,14 @@ const bookmarkList = (($) => {
         return `
         <li class="item-element js-item-element card" data-item-id="${item.id}">
         ${itemTitle}
-        <form>
-        <textarea>${(item.desc ? item.desc : '')}</textarea>
-        <select>
-          <option>Rating</option>
-        </select>
-        </form>
+        <textarea class="bookmark-edit-item-desc js-edit-item-desc">${(item.desc ? item.desc : '')}</textarea>
+        <select class="bookmark-edit-item-rating js-edit-item-rating" aria-label="Star Rating">
+            <option value="5" ${(item.rating === 5 ? 'selected' : '')}>5 Stars</option>
+            <option value="4" ${(item.rating === 4 ? 'selected' : '')}>4 Stars</option>
+            <option value="3" ${(item.rating === 3 ? 'selected' : '')}>3 Stars</option>
+            <option value="2" ${(item.rating === 2 ? 'selected' : '')}>2 Stars</option>
+            <option value="1" ${(item.rating === 1 ? 'selected' : '')}>1 Stars</option>
+          </select>
         <button class="bookmark-item-delete js-item-discard" role="button">Discard</button>
         <button class="bookmark-item-edit js-item-update" role="button">Update</button>
         </li>
@@ -224,6 +226,36 @@ const bookmarkList = (($) => {
     });
   };
 
+  const handleDiscardItemClicked = () => {
+    console.log('`bookmarkList.handleEditItemClicked` ran'); // eslint-disable-line no-console
+    $('.js-bookmark-list').on('click', '.js-item-discard', (event) => {
+      store.editingId = '';
+      render();
+    });
+  };
+
+  const handleUpdateItemClicked = () => {
+    console.log('`bookmarkList.handleDeleteItemClicked` ran'); // eslint-disable-line no-console
+    $('.js-bookmark-list').on('click', '.js-item-update', (event) => {
+      const id = getItemIdFromElement(event.currentTarget);
+      const updateItemDesc = $('.js-edit-item-desc').val();
+      const updateItemRating = parseInt($('.js-edit-item-rating').val());
+      const updateData = { desc: updateItemDesc, rating: updateItemRating };
+      api.updateItem(id, updateData,
+        () => {
+          store.findAndUpdateItem(id, updateData);
+          store.setError(null);
+          store.editingId = '';
+          render();
+        },
+        (err) => {
+          store.setError(err);
+          render();
+        }
+      );
+    });
+  };
+
   const handleCloseError = () => {
     console.log('`bookmarkList.handleCloseError` ran'); // eslint-disable-line no-console
     $('.error-container').on('click', '#cancel-error', () => {
@@ -238,9 +270,13 @@ const bookmarkList = (($) => {
     handleMinimumRatingChanged();
     handleNewItemSubmit();
     handleCancelItemSubmit();
+
     handleListItemClicked();
     handleEditItemClicked();
     handleDeleteItemClicked();
+    handleUpdateItemClicked();
+    handleDiscardItemClicked();
+    
     handleCloseError();
   };
 
