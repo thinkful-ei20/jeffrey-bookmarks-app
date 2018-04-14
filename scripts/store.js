@@ -42,17 +42,6 @@ const store = (() => {
     return filterMinimumRatingAbove;
   };
 
-  let selectedId = '';
-  const setSelectedId = (id) => {
-    console.log('`store.setSelectedId` ran'); // eslint-disable-line no-console
-    selectedId = id;
-  };
-
-  const getSelectedId = () => {
-    console.log('`store.getSelectedId` ran'); // eslint-disable-line no-console
-    return selectedId;
-  };
-
   const addItem = function(item) {
     console.log('`store.addItem` ran'); // eslint-disable-line no-console
     this.items.push(item);
@@ -89,8 +78,7 @@ const store = (() => {
     setFilterMinimumRatingAbove,
     
     selectedIds: [],
-    setSelectedId,
-    getSelectedId,
+    editingId: '',
     
     addItem,
     findAndUpdateItem,

@@ -22,9 +22,53 @@ const bookmarkList = (($) => {
 
   const generateItemElement = (item) => {
     console.log('`bookmarkList.generateItemElement` ran'); // eslint-disable-line no-console
+    
+    let itemTitle = `
+    <h3>${item.title}</h3>
+    `;
+
     let itemRating = '';
-    for(let i = 0; i < 6; i++) {
-      itemRating += `<span class="fa fa-star ${(item.rating >= i ? 'checked' : '')}"></span>`;
+    for(let i = 0; i < 5; i++) {
+      itemRating += `<span class="fa fa-star ${(item.rating > i ? 'checked' : '')}"></span>`;
+    }
+    if(!store.selectedIds.includes(item.id)){
+      return `
+      <li class="item-element js-item-element card" data-item-id="${item.id}">
+      ${itemTitle}
+      ${itemRating}
+      <button class="bookmark-item-expand js-item-expand" role="button">&darr;</button>
+    </li>
+    `;
+    }
+    else {
+      if(store.editingID !== item.id) {
+        return `
+        <li class="item-element js-item-element card" data-item-id="${item.id}">
+        ${itemTitle}
+        <p>${(item.desc ? item.desc : 'No Description')}</p>
+        <a href="${item.url}" target="_blank"><p>Visit Site</p></a>
+        <button class="bookmark-item-delete js-item-delete" role="button">Delete</button>
+        <button class="bookmark-item-edit js-item-edit" role="button">Edit</button>
+        <button class="bookmark-item-collapse js-item-collapse" role="button">&uarr;</button>
+        ${itemRating}
+        </li>
+        `;
+      }
+      else {
+        return `
+        <li class="item-element js-item-element card" data-item-id="${item.id}">
+        ${itemTitle}
+        <form>
+        <textarea>${(item.desc ? item.desc : '')}</textarea>
+        <select>
+          <option>Rating</option>
+        </select>
+        </form>
+        <button class="bookmark-item-delete js-item-discard" role="button">Discard</button>
+        <button class="bookmark-item-edit js-item-update" role="button">Update</button>
+        </li>
+        `;
+      }
     }
 
     let itemView = '';
@@ -32,19 +76,20 @@ const bookmarkList = (($) => {
       itemView = `
       <p>${(item.desc ? item.desc : 'No Description')}</p>
       <a href="${item.url}" target="_blank"><p>Visit Site</p></a>
-      <button class="bookmark-item-delete js-item-delete" role="button">Remove Bookmark</button>
+      <button class="bookmark-item-delete js-item-delete" role="button">Delete</button>
+      <button class="bookmark-item-edit js-item-edit" role="button">Edit</button>
       `;
     }
 
-    return `
-    <li class="item-element js-item-element card" data-item-id="${item.id}">
-    <h3>${item.title}</h3>
-    ${itemView}
-    <div class="item-element-footer>
-      ${itemRating}
-    </div>
-    </li>
-    `;
+    // return `
+    // <li class="item-element js-item-element card" data-item-id="${item.id}">
+    // ${itemTitle}
+    // ${itemView}
+    // <div class="item-element-footer>
+    //   ${itemRating}
+    // </div>
+    // </li>
+    // `;
   };
 
   const generateBookmarkItemsString = (itemList) => {
@@ -155,7 +200,7 @@ const bookmarkList = (($) => {
 
   const handleListItemClicked = () => {
     console.log('`bookmarkList.handleListItemClicked` ran'); // eslint-disable-line no-console
-    $('.js-bookmark-list').on('click', '.js-item-element', (event) => {
+    $('.js-bookmark-list').on('click', '.js-item-expand', (event) => {
       const id = getItemIdFromElement(event.currentTarget);
       if(store.selectedIds.includes(id)) {
         store.selectedIds.splice(store.selectedIds.indexOf(id), 1);
@@ -163,6 +208,26 @@ const bookmarkList = (($) => {
       else {
         store.selectedIds.push(id);
       }
+      render();
+    });
+
+    $('.js-bookmark-list').on('click', '.js-item-collapse', (event) => {
+      const id = getItemIdFromElement(event.currentTarget);
+      if(store.selectedIds.includes(id)) {
+        store.selectedIds.splice(store.selectedIds.indexOf(id), 1);
+      }
+      else {
+        store.selectedIds.push(id);
+      }
+      render();
+    });
+  };
+
+  const handleEditItemClicked = () => {
+    console.log('`bookmarkList.handleEditItemClicked` ran'); // eslint-disable-line no-console
+    $('.js-bookmark-list').on('click', '.js-item-edit', (event) => {
+      const id = getItemIdFromElement(event.currentTarget);
+      store.editingId = id;
       render();
     });
   };
@@ -194,6 +259,7 @@ const bookmarkList = (($) => {
     handleNewItemSubmit();
     handleCancelItemSubmit();
     handleListItemClicked();
+    handleEditItemClicked();
     handleDeleteItemClicked();
     handleCloseError();
   };
