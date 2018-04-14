@@ -23,7 +23,7 @@ const bookmarkList = (($) => {
   const generateItemElement = (item) => {
     console.log('`bookmarkList.generateItemElement` ran'); // eslint-disable-line no-console
     let itemRating = '';
-    for(let i = 1; i <= 5; i++) {
+    for(let i = 0; i < 6; i++) {
       itemRating += `<span class="fa fa-star ${(item.rating >= i ? 'checked' : '')}"></span>`;
     }
 
@@ -32,7 +32,7 @@ const bookmarkList = (($) => {
       itemView = `
       <p>${(item.desc ? item.desc : 'No Description')}</p>
       <a href="${item.url}" target="_blank"><p>Visit Site</p></a>
-      <button class="bookmark-item-delete js-item-delete">Remove Bookmark</button>
+      <button class="bookmark-item-delete js-item-delete" role="button">Remove Bookmark</button>
       `;
     }
 
@@ -76,6 +76,8 @@ const bookmarkList = (($) => {
       $('.bookmark-add-controls').removeClass('hidden');
       $('.js-bookmark-list-entry-title').val('');
       $('.js-bookmark-list-entry-url').val('');
+      $('.js-bookmark-list-entry-desc').val('');
+      $('.js-bookmark-list-entry-rating').val(5);
       $('.js-bookmark-list-entry-title').focus();
     }
     else {
@@ -84,7 +86,7 @@ const bookmarkList = (($) => {
       $('.js-list-rating').val(store.getFilterMinimumRatingAbove());
     }
     
-    const bookmarkListItemsString = generateBookmarkItemsString(store.getItems());
+    const bookmarkListItemsString = generateBookmarkItemsString(store.items);
     $('.js-bookmark-list').html(bookmarkListItemsString);
   };
 
@@ -93,8 +95,7 @@ const bookmarkList = (($) => {
     $('#js-bookmark-list-form').on('reset', (() => {
       store.setRenderMode(store.RENDER_MODE.default);
       store.setError(null);
-      render();
-      $('.js-list-add').focus();
+      render();      
     }));
   };
 
@@ -118,6 +119,7 @@ const bookmarkList = (($) => {
           store.setRenderMode(store.RENDER_MODE.default);
           store.setError(null);
           render();
+          $('.js-list-add').focus();
         },
         (err) => {
           store.setError(err);

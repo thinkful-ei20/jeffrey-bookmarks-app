@@ -53,20 +53,14 @@ const store = (() => {
     return selectedId;
   };
 
-  let items = [];
-  const getItems = () => {
-    console.log('`store.getItems` ran'); // eslint-disable-line no-console
-    return items;
-  };
-
-  const addItem = (item) => {
+  const addItem = function(item) {
     console.log('`store.addItem` ran'); // eslint-disable-line no-console
-    items.push(item);
+    this.items.push(item);
   };
 
-  const findById = (id) => {
+  const findById = function(id) {
     console.log('`store.findById` ran'); // eslint-disable-line no-console
-    return items.find(item => item.id === id);
+    return this.items.find(item => item.id === id);
   };
 
   const findAndUpdateItem = (id, newData) => {
@@ -75,12 +69,14 @@ const store = (() => {
     Object.assign(item, newData);
   };
 
-  const findAndDeleteItem = (id) => {
+  const findAndDeleteItem = function(id) {
     console.log('`store.findAndDeleteItem` ran'); // eslint-disable-line no-console
-    items = items.filter(item => item.id !== id);
+    this.items = this.items.filter(item => item.id !== id);
   };
 
   return {
+    items: [],
+
     setError,
     getError,
     hasError,
@@ -96,7 +92,6 @@ const store = (() => {
     setSelectedId,
     getSelectedId,
     
-    getItems,
     addItem,
     findAndUpdateItem,
     findAndDeleteItem,

@@ -13,36 +13,36 @@
 <body>
   <div class="container">
     <header role="banner">
-      <div class="error-container"></div>
+      <div class="error-container hidden"></div>
       <h1>Bookmarks App</h1>
     </header>
     <nav role="navigation">
       <div class="bookmark-list-controls">
-        <button class="bookmark-list-add js-list-add" autofocus>ADD BOOKMARK</button>
+        <button class="bookmark-list-add js-list-add" role="button" autofocus>ADD BOOKMARK</button>
         <select class="bookmark-list-rating js-list-rating" aria-label="Star Rating">
-          <option selected="selected" value="0">Minimum Rating</option>
-          <option value="5">5 Stars</option>
-          <option value="4">4 Stars</option>
-          <option value="3">3 Stars</option>
-          <option value="2">2 Stars</option>
-          <option value="1">1 Stars</option>
+          <option selected="selected" value="0" aria-checked="true">Minimum Rating</option>
+          <option value="5" aria-checked="false">5 Stars</option>
+          <option value="4" aria-checked="false">4 Stars</option>
+          <option value="3" aria-checked="false">3 Stars</option>
+          <option value="2" aria-checked="false">2 Stars</option>
+          <option value="1" aria-checked="false">1 Stars</option>
         </select>
       </div>
       <div class="bookmark-add-controls hidden">
         <form id="js-bookmark-list-form">
           <h2>Create a Bookmark</h2>
-          <input type="text" name="bookmark-list-entry-title" class="js-bookmark-list-entry-title" placeholder="title">
-          <input type="text" name="bookmark-list-entry-url" class="js-bookmark-list-entry-url" placeholder="http://polygon.com/etc">
-          <select class="bookmark-list-entry-rating js-bookmark-list-entry-rating">
-            <option selected="selected" value="5">5 Stars</option>
-            <option value="4">4 Stars</option>
-            <option value="3">3 Stars</option>
-            <option value="2">2 Stars</option>
-            <option value="1">1 Stars</option>
+          <input type="text" name="bookmark-list-entry-title" class="js-bookmark-list-entry-title" placeholder="title" aria-label="Bookmark Title">
+          <input type="text" name="bookmark-list-entry-url" class="js-bookmark-list-entry-url" placeholder="http://polygon.com/etc" aria-label="Bookmark Url">
+          <select class="bookmark-list-entry-rating js-bookmark-list-entry-rating" aria-label="Star Rating">
+            <option selected="selected" value="5" aria-checked="true">5 Stars</option>
+            <option value="4" aria-checked="false">4 Stars</option>
+            <option value="3" aria-checked="false">3 Stars</option>
+            <option value="2" aria-checked="false">2 Stars</option>
+            <option value="1" aria-checked="false">1 Stars</option>
           </select><br>
-          <textarea name="bookmark-list-entry-desc" class="js-bookmark-list-entry-desc" placeholder="longer description here"></textarea><br>
-          <button type="submit">Save</button>
-          <button type="reset">Cancel</button>
+          <textarea name="bookmark-list-entry-desc" class="js-bookmark-list-entry-desc" placeholder="longer description here" aria-label="Bookmark Description" aria-multiline="true"></textarea><br>
+          <button type="submit" role="button">Save</button>
+          <button type="reset" role="button">Cancel</button>
         </form>
       </div>
     </nav>
