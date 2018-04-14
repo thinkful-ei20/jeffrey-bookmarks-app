@@ -1,5 +1,10 @@
-const bookmarkList = (() => {
+'use strict';
+/* global jQuery, store */
+
+// eslint-disable-next-line no-unused-vars
+const bookmarkList = (($) => {
   const generateError = (err) => {
+    console.log('`bookmarkList.generateError` ran'); // eslint-disable-line no-console
     let message = '';
     if (err.responseJSON && err.responseJSON.message) {
       message = err.responseJSON.message;
@@ -49,8 +54,8 @@ const bookmarkList = (() => {
     }
   };
 
-  const generateBookmarkItemsString = (bookmarkList) => {
-    const items = store.getItems().map((item) => {
+  const generateBookmarkItemsString = (itemList) => {
+    const items = itemList.map((item) => {
       if(!(item.rating >= store.getFilterMinimumRatingAbove())) {
         return '';
       }
@@ -72,7 +77,8 @@ const bookmarkList = (() => {
       $('.error-container').empty();
     }
 
-    if (store.getRenderMode() === store.RENDER_MODE.adding) {
+    if(store.getRenderMode() === store.RENDER_MODE.adding) {
+      $('.bookmark-list-controls').addClass('hidden');
       $('.bookmark-add-controls').removeClass('hidden');
       $('.js-bookmark-list-entry-title').val("");
       $('.js-bookmark-list-entry-url').val("");
@@ -80,9 +86,9 @@ const bookmarkList = (() => {
     }
     else {
       $('.bookmark-add-controls').addClass('hidden');
+      $('.bookmark-list-controls').removeClass('hidden');
+      $('.js-list-rating').val(store.getFilterMinimumRatingAbove());
     }
-
-    $('.js-list-rating').val(store.getFilterMinimumRatingAbove());
     
     const bookmarkListItemsString = generateBookmarkItemsString(store.getItems());
     $('.js-bookmark-list').html(bookmarkListItemsString);
@@ -215,4 +221,4 @@ const bookmarkList = (() => {
     bindEvenHandlers,
   };
 
-})();
+})(jQuery);
