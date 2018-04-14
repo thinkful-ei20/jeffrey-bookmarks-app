@@ -31,8 +31,16 @@ const store = (() => {
     return renderMode;
   };
 
-  const setRating = function(rating) {
-    this.rating = rating;
+
+  let filterMinimumRatingAbove = 0;
+  const setFilterMinimumRatingAbove = (rating) => {
+    console.log('`store.setFilterMinimumRatingAbove` ran'); // eslint-disable-line no-console
+    filterMinimumRatingAbove = rating;
+  };
+
+  const getFilterMinimumRatingAbove = () => {
+    console.log('`store.getFilterMinimumRatingAbove` ran'); // eslint-disable-line no-console
+    return filterMinimumRatingAbove;
   };
 
   const setEditingId = function(id) {
@@ -50,20 +58,20 @@ const store = (() => {
     items.push(item);
   };
 
-  const findById = function(id) {
+  const findById = (id) => {
     console.log('`store.findById` ran'); // eslint-disable-line no-console
-    return this.items.find(item => item.id === id);
+    return items.find(item => item.id === id);
   };
 
   const findAndUpdateItem = (id, newData) => {
     console.log('`store.findAndUpdateItem` ran'); // eslint-disable-line no-console
-    const item = this.findById(id);
+    const item = findById(id);
     Object.assign(item, newData);
   };
 
   const findAndDeleteItem = (id) => {
     console.log('`store.findAndDeleteItem` ran'); // eslint-disable-line no-console
-    this.items = this.items.filter(item => item.id !== id);
+    items = items.filter(item => item.id !== id);
   };
 
   return {
@@ -75,9 +83,10 @@ const store = (() => {
     setRenderMode,
     getRenderMode,
     
-    rating: 0,
+    getFilterMinimumRatingAbove,
+    setFilterMinimumRatingAbove,
+    
     editingId: '',
-    setRating,
     setEditingId,
     
     getItems,

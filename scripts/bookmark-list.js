@@ -51,7 +51,7 @@ const bookmarkList = (() => {
 
   const generateBookmarkItemsString = (bookmarkList) => {
     const items = store.getItems().map((item) => {
-      if(!(item.rating >= store.rating)) {
+      if(!(item.rating >= store.getFilterMinimumRatingAbove())) {
         return '';
       }
 
@@ -82,7 +82,7 @@ const bookmarkList = (() => {
       $('.bookmark-add-controls').addClass('hidden');
     }
 
-    $('.js-list-rating').val(store.rating);
+    $('.js-list-rating').val(store.getFilterMinimumRatingAbove());
     
     const bookmarkListItemsString = generateBookmarkItemsString(store.getItems());
     $('.js-bookmark-list').html(bookmarkListItemsString);
@@ -126,7 +126,7 @@ const bookmarkList = (() => {
   const handleMinimumRatingChanged = () => {
     $('.js-list-rating').on('change', (event) => {
       const rating = parseInt($('.js-list-rating').val());
-      store.setRating(rating);
+      store.setFilterMinimumRatingAbove(rating);
       render();
     });
   };
