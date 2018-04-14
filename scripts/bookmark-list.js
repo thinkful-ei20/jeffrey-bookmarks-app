@@ -16,7 +16,7 @@ const bookmarkList = (() => {
   };
 
   const generateItemElement = (item) => {
-    if(item.id === store.editingId) {
+    if(item.id === store.getSelectedId()) {
       return `
       <li class="item-element js-item-element" data-item-id="${item.id}">
         <form class="js-edit-item">
@@ -140,14 +140,14 @@ const bookmarkList = (() => {
   const handleEditItemClicked = () => {
     $('.js-bookmark-list').on('click', '.js-item-edit', event => {
       const id = getItemIdFromElement(event.currentTarget);
-      store.setEditingId(id);
+      store.setSelectedId(id);
       render();
     });
   };
 
   const handleCancelEditItemSubmit = () => {
     $('.js-bookmark-list').on("reset", ((event) => {
-      store.setEditingId('');
+      store.setSelectedId('');
       store.setError(null);
       render();
     }));
@@ -170,7 +170,7 @@ const bookmarkList = (() => {
       api.updateItem(id, itemData,
         (response) => {
           store.findAndUpdateItem(id, itemData);
-          store.setEditingId('');
+          store.setSelectedId('');
           render();
         },
         (err) => {
@@ -185,7 +185,7 @@ const bookmarkList = (() => {
       const id = getItemIdFromElement(event.currentTarget);
       api.deleteItem(id, () => {
         store.findAndDeleteItem(id);
-        store.setEditingId('');
+        store.setSelectedId('');
         render();
       });
     });

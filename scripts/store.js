@@ -8,7 +8,7 @@ const store = (() => {
     console.log('`store.setError` ran'); // eslint-disable-line no-console
     error = err;
   };
-
+  
   const getError = () => {
     console.log('`store.getError` ran'); // eslint-disable-line no-console
     return error;
@@ -31,20 +31,26 @@ const store = (() => {
     return renderMode;
   };
 
-
   let filterMinimumRatingAbove = 0;
   const setFilterMinimumRatingAbove = (rating) => {
     console.log('`store.setFilterMinimumRatingAbove` ran'); // eslint-disable-line no-console
     filterMinimumRatingAbove = rating;
   };
-
+  
   const getFilterMinimumRatingAbove = () => {
     console.log('`store.getFilterMinimumRatingAbove` ran'); // eslint-disable-line no-console
     return filterMinimumRatingAbove;
   };
 
-  const setEditingId = function(id) {
-    this.editingId = id;
+  let selectedId = '';
+  const setSelectedId = (id) => {
+    console.log('`store.setSelectedId` ran'); // eslint-disable-line no-console
+    selectedId = id;
+  };
+
+  const getSelectedId = () => {
+    console.log('`store.getSelectedId` ran'); // eslint-disable-line no-console
+    return selectedId;
   };
 
   let items = [];
@@ -77,7 +83,7 @@ const store = (() => {
   return {
     setError,
     getError,
-    hasError,    
+    hasError,
 
     RENDER_MODE,
     setRenderMode,
@@ -86,8 +92,8 @@ const store = (() => {
     getFilterMinimumRatingAbove,
     setFilterMinimumRatingAbove,
     
-    editingId: '',
-    setEditingId,
+    setSelectedId,
+    getSelectedId,
     
     getItems,
     addItem,
