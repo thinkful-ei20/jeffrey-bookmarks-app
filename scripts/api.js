@@ -43,6 +43,7 @@ const api = (($) => {
   };
 
   const deleteItem = (id, onSuccess, onError) => {
+    console.log('`api.deleteItem` ran'); // eslint-disable-line no-console
     doWork({
       url: `${API_URL}/${id}`,
       method: 'DELETE',
@@ -55,6 +56,7 @@ const api = (($) => {
     console.log('`api.doWork` ran'); // eslint-disable-line no-console
     if(!isInitialized) {
       init();
+      isInitialized = true;
     }
     
     $.ajax(work);
