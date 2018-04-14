@@ -31,7 +31,7 @@ const bookmarkList = (($) => {
     for(let i = 0; i < 5; i++) {
       itemRating += `<span class="fa fa-star ${(item.rating > i ? 'checked' : '')}"></span>`;
     }
-    if(!store.selectedIds.includes(item.id)){
+    if (!store.selectedIds.includes(item.id)) {
       return `
       <li class="item-element js-item-element card" data-item-id="${item.id}">
       ${itemTitle}
@@ -41,7 +41,7 @@ const bookmarkList = (($) => {
     `;
     }
     else {
-      if(store.editingID !== item.id) {
+      if(store.editingId !== item.id) {
         return `
         <li class="item-element js-item-element card" data-item-id="${item.id}">
         ${itemTitle}
@@ -69,27 +69,7 @@ const bookmarkList = (($) => {
         </li>
         `;
       }
-    }
-
-    let itemView = '';
-    if(store.selectedIds.includes(item.id)) {
-      itemView = `
-      <p>${(item.desc ? item.desc : 'No Description')}</p>
-      <a href="${item.url}" target="_blank"><p>Visit Site</p></a>
-      <button class="bookmark-item-delete js-item-delete" role="button">Delete</button>
-      <button class="bookmark-item-edit js-item-edit" role="button">Edit</button>
-      `;
-    }
-
-    // return `
-    // <li class="item-element js-item-element card" data-item-id="${item.id}">
-    // ${itemTitle}
-    // ${itemView}
-    // <div class="item-element-footer>
-    //   ${itemRating}
-    // </div>
-    // </li>
-    // `;
+    }  
   };
 
   const generateBookmarkItemsString = (itemList) => {
