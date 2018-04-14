@@ -1,3 +1,6 @@
+'use strict';
+/* global $, api, store, bookmarkList */
+
 $(document).ready(() => {
   bookmarkList.bindEvenHandlers();
   bookmarkList.render();
